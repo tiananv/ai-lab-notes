@@ -1,0 +1,11 @@
+mode,question_id,correctness,citation_correct,unsupported_claims,prompt_characters,elapsed_seconds,reviewer_notes
+long-context,q1,,,,,,
+long-context,q2,,,,,,
+long-context,q3,,,,,,
+long-context,q4,,,,,,
+long-context,q5,,,,,,
+search,q1,,,,,,
+search,q2,,,,,,
+search,q3,,,,,,
+search,q4,,,,,,
+search,q5,,,,,,
