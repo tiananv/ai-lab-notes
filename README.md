@@ -3,79 +3,89 @@
   <img src="assets/banner-light.svg" alt="ai-lab-notes. Small experiments in everyday BA work." width="1200">
 </picture>
 
-I want to find out where AI saves me time on everyday BA tasks. I'll use this notebook to try a small task, keep the evidence and write a short, dated note about whether it helps. Each experiment starts with a question and a rule for acceptable errors and checking effort.
-
-## How I run an experiment
-
-```mermaid
-flowchart LR
-    question["Question"] --> kit["Kit"] --> run["Run"] --> score["Score"] --> note["Note"]
-```
-
-For each experiment, I'll choose a kit and decide how to score it and what would make it useful before running anything. I'll keep the input and prompt fixed when comparing tools, save the actual output and model details, and include checking and correction time. After checking the evidence, I'll write the verdict and practical BA advice in a short note.
+I want to try new AI features on everyday BA work and write down what happens. This is where I'll keep short notes and honest verdicts, with the scoring decided before I start. I'm interested in whether the time saved holds up once checking and corrections are included.
 
 ## Notes
 
 <!-- NOTES:START -->
 
-**First note coming soon.** The experiment kits and scoring sheets are ready. I haven't recorded a reviewed experiment yet, so results are pending.
+**First note coming soon.** I haven't recorded a reviewed experiment yet. The kits and blank scoring sheets are ready; results are pending.
 
-Next I'll run a [kit](BACKLOG.md), check its output and write my first note using [TEMPLATE.md](TEMPLATE.md).
+Next I'll [run a kit](#how-to-run-it), check the actual output and write up what happened.
 
 <!-- NOTES:END -->
 
-## Backlog
+## What I want to try
 
-- [Local model on a laptop](kits/local-model/): how do a local and a hosted model compare on requirement quality and effort using fictional meeting material?
-- [CPS 230: long context or search](kits/cps230-context/): which approach answers questions about a public standard more accurately?
-- [Copilot agent mode and Claude Code](kits/data-dictionary/): how do they compare on the same data dictionary task?
-- [Structured user stories](kits/structured-stories/): can a model produce consistent user stories a team can load into a backlog tool, using JSON with a fixed schema?
-- [Editing an Excel workbook](kits/excel-formulas/): can an agent make the requested changes and preserve the formulas?
-- [Voice memo to requirements](kits/voice-requirements/): how does transcription handle an Australian voice, and what carries through to requirements?
+| Kit | My question |
+| --- | --- |
+| [Local model](kits/local-model/) | How does a laptop model compare with a hosted model on requirements? |
+| [CPS 230](kits/cps230-context/) | Does the whole standard or a few searched pages help more? |
+| [Data dictionary](kits/data-dictionary/) | Which agent leaves less for me to correct? |
+| [User stories](kits/structured-stories/) | How often does the answer match the required JSON format? |
+| [Excel formulas](kits/excel-formulas/) | Can an agent edit a workbook and keep its formulas intact? |
+| [Voice requirements](kits/voice-requirements/) | Which transcription errors change the requirements? |
 
-The [backlog](BACKLOG.md) records the planned comparisons. Each kit has inputs, instructions and a scoring sheet with no results filled in.
+The [backlog](BACKLOG.md) has the planned comparisons. Each kit includes inputs, a prompt and a blank scoring sheet.
 
-## Rules for each experiment
+## How I'll work through it
 
-- Use public or made-up data only. Keep employer, client and personal material out.
-- Decide the scoring criteria and a rule for acceptable errors and correction effort before the run. Keep failures and missing trials visible.
-- Record the tools, versions, model identifiers, prompts and run conditions.
-- Check outputs with code or source evidence, then record the human judgement separately.
-- Publish reviewed original outputs and completed scoring sheets in [evidence/](evidence/README.md), linked from each note.
-- Leave results pending until there is evidence. Write notes after doing the experiment.
+```mermaid
+flowchart LR
+    question["Question"] --> kit["Kit"] --> run["Try it"] --> score["Check it"] --> note["Write a note"]
+```
+
+I'll use public or made-up inputs and set an acceptable error level before starting. I'll save the first answer, including failures, and count the time spent checking and fixing it. Then I'll compare it with the rule I set and link the evidence from my note.
 
 ## What the AI does / What checks it
 
 | What the AI does | What checks it |
 | --- | --- |
-| Drafts requirements from fictional inputs | A person compares each statement with the input and scores it against the kit rubric |
-| Answers questions about a public standard | A person checks the cited paragraphs in the recorded edition |
-| Produces JSON user stories and a data dictionary | Schema validation and a comparison with the input database structure |
-| Edits a workbook | Formula and cell comparison, followed by a person checking recalculated totals and formatting |
-| Transcribes speech | Word error rate against a verified transcript, plus a check of important terms |
+| Drafts requirements | I'll compare them with the input and score missing or invented rules |
+| Answers questions about CPS 230 | I'll read the cited paragraphs in the saved edition |
+| Produces user stories or a data dictionary | Scripts check the format and database columns; I'll check the meaning |
+| Edits a workbook | A script compares cells and formulas; I'll recalculate totals and check formatting |
+| Transcribes speech | A script counts word errors; I'll check important facts and requirements |
 
-## Try it
+## How to run it
 
-Follow the [run guide](docs/RUNNING.md) for setup, checks and running an experiment.
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run these from the repository folder. It installs the Python packages as needed.
+
+Copy the blank note template into a local draft folder. Fill it after a real experiment.
+
+```sh
+uv run python -m scripts.prepare note --out runs/first-note
+```
+
+Start the user-stories kit with its inputs and blank scoring forms, then follow its [steps](kits/structured-stories/README.md) to get and check real answers.
+
+```sh
+uv run python -m scripts.prepare kit structured-stories --out runs/stories
+```
+
+After writing and checking a real note in `notes/`, update the notes table above.
+
+```sh
+uv run python -m scripts.build_index
+```
+
+Use a fresh folder for another attempt. The [run guide](docs/RUNNING.md) covers saving answers and sharing evidence.
 
 ## Data
 
-The kit inputs are explicitly fictional and covered by this repository's [MIT licence](LICENSE). Made-up responses used to test the checking tools live only in `tests/`. They are never notebook entries or experiment evidence.
-
-The standard kit downloads [APRA CPS 230](https://www.apra.gov.au/standards/cps-230) from APRA and records its edition and SHA-256, a fingerprint of the exact file. APRA's [copyright terms](https://www.apra.gov.au/copyright) specify a Creative Commons Attribution licence, with exceptions for logos, the Coat of Arms and third-party material. The PDF is stored in ignored `data/raw/`, along with download metadata, and is not included in this repository. Voice recordings must be made for the experiment from the fictional reading script and remain local in `runs/`.
+The fictional inputs use this repository's [MIT licence](LICENSE). The [CPS 230 kit](kits/cps230-context/) downloads a public APRA standard, which has its own [copyright terms](https://www.apra.gov.au/copyright). Downloaded PDFs stay in `data/raw/`; recordings and raw answers stay in `runs/`. Neither folder is published. I'll check anything going into [evidence/](evidence/README.md) before sharing it.
 
 ## Repo layout
 
 ```text
-notes/          My dated notes, initially empty
-evidence/       Reviewed original outputs and completed scoring sheets for each note
-TEMPLATE.md     Front matter and writing prompts for a real note
-BACKLOG.md      Planned questions and links to kits
-kits/          Experiment inputs, prompts and blank scoring sheets
-scripts/       Index builder, model backends and measurable checks
-docs/          Shared run instructions and an experiment record template
-tests/         Offline checks using made-up test inputs
-assets/        Light and dark banners
+notes/        Dated notes, currently empty
+evidence/     Shareable outputs and scores, once reviewed
+TEMPLATE.md   Blank note template
+BACKLOG.md    Planned comparisons
+kits/         Inputs, prompts and scoring guides
+scripts/      Preparation and checking tools
+docs/         Run guide and blank run record
+assets/       Light and dark banners
 ```
 
 ## About this repo
@@ -84,4 +94,4 @@ This first version was built with AI coding assistants. The results come from th
 
 ## Under the hood
 
-The [scripts](scripts/) save model responses, check measurable outputs and rebuild the notes table with `make results`. The [offline tests](tests/) use clearly labelled made-up inputs and never call a real model. CI runs those checks and flags an out-of-date notes table. Setup and verification commands are in the [run guide](docs/RUNNING.md#setup-and-checks).
+The [scripts](scripts/) save answers and model details, check measurable parts of the output and update the notes table. There are some automatic checks in `tests/` to make sure the scripts work.

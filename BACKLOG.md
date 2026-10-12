@@ -1,14 +1,14 @@
-# Planned experiments
+# Questions I want to try
 
-These are questions I plan to investigate. I haven't recorded any results yet. Before each run, I'll decide the scoring rules, record a decision rule for acceptable errors and correction effort, and save a copy of the kit's scoring sheet.
+I haven't recorded results yet. For each comparison, I'll set the scoring and acceptable errors before starting, then count the time spent checking and fixing the answer.
 
 | Kit | Question | Planned comparison |
 | --- | --- | --- |
-| [Local model](kits/local-model/) | How do a local and a hosted model compare on requirement quality and effort using fictional meeting material? | A downloaded Ollama model and a hosted model, both given the same fictional input |
-| [CPS 230](kits/cps230-context/) | Does a model answer more accurately with a whole public standard or searched excerpts? | Same model and questions; whole document versus three pages picked by matching words in the question |
-| [Data dictionary](kits/data-dictionary/) | Which agent needs less correction on a data dictionary job? | Copilot agent mode and Claude Code, using fresh copies of the same files |
-| [Structured stories](kits/structured-stories/) | How many planned trials return user stories in the required JSON format? | Repeated fresh trials with a fixed prompt and schema |
-| [Excel formulas](kits/excel-formulas/) | Can an agent update a workbook without breaking formulas? | Original workbook versus the actual edited workbook |
-| [Voice requirements](kits/voice-requirements/) | How does transcription handle an Australian accent, and which errors change requirements? | Same self-recorded fictional script through chosen transcription tools |
+| [Local model](kits/local-model/) | How do a local and a hosted model compare on requirement quality and effort? | A downloaded Ollama model and a hosted model given the same fictional workshop |
+| [CPS 230](kits/cps230-context/) | Does the whole standard or a few searched pages help more? | Same model and questions; whole document versus three pages picked by matching question words |
+| [Data dictionary](kits/data-dictionary/) | Which agent leaves less for me to correct? | Copilot agent mode and Claude Code with fresh copies of the same SQL and CSVs |
+| [User stories](kits/structured-stories/) | How often does the answer match the required JSON format? | Fresh attempts with a fixed prompt, model and required fields |
+| [Excel formulas](kits/excel-formulas/) | Can an agent edit a workbook and keep its formulas intact? | The original workbook and the first returned version |
+| [Voice requirements](kits/voice-requirements/) | Which transcription errors change the requirements? | The same recording of a fictional script through two transcription tools |
 
-Treat each comparison as evidence about that setup. A short task or a small sample cannot establish that a tool is always reliable. Keep failed attempts, distinguish setup time from task time, and record any corrections separately from the first response.
+I'll keep failures and later corrections visible. A small task can help me decide what to try next; it won't tell me which tool is best for every job.
