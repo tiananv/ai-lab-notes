@@ -1,6 +1,6 @@
 # Shareable experiment evidence
 
-This tracked folder holds evidence from real experiments on public or made-up inputs. No experiment evidence has been published yet. Raw material stays in ignored `runs/`; downloaded source files stay in ignored `data/raw/`.
+I'll use this folder for evidence from real experiments on public or made-up inputs. I haven't published any experiment evidence yet. Raw material stays in ignored `runs/`; downloaded source files stay in ignored `data/raw/`.
 
 After a real run and publication review, create `evidence/<note-slug>/`. Use the note's complete filename without `.md`, including its date, for `<note-slug>`. Follow the [publishing steps](../docs/RUNNING.md#publish-the-evidence) before copying any files here.
 
@@ -12,4 +12,4 @@ Each note's evidence folder should contain shareable original outputs, completed
 - The exact checking commands, human scoring criteria, measured correction effort and any uncertainty. Keep corrected copies separate from original outputs.
 - Source attribution, the publication review and any files or details withheld. State how missing evidence limits what a reader can check.
 
-Link this per-note README from the note's "What happened" section. Only copy files after checking for employer/client material, personal information, credentials, private paths and hidden metadata. If an original is unsafe to share, keep it local and disclose the gap; do not label an edited excerpt as an original. Raw recordings and downloaded PDFs remain ignored. Test fixtures never belong here.
+Link this per-note README where the note discusses its evidence. The template calls that section "What happened". Only copy files after checking for employer/client material, personal information, credentials, private paths and hidden metadata. If an original is unsafe to share, keep it local and disclose the gap; do not label an edited excerpt as an original. Raw recordings and downloaded PDFs remain ignored. Made-up test outputs never belong here.
