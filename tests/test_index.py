@@ -76,6 +76,62 @@ def test_bad_front_matter_fails(tmp_path, old, new):
         read_note(path)
 
 
+@pytest.mark.parametrize("value", [None, "", '""', '"   "', "true", "2", "[]", "{}", "|\n  two\n  lines"])
+def test_decision_rule_is_required_text_before_indexing(tmp_path, value):
+    """Reject missing, blank or non-text rules without replacing the published index."""
+    project = root(tmp_path, True)
+    build_index(project)
+    published = [project / "README.md", *sorted((project / "assets").glob("*.svg"))]
+    before = {path: path.read_bytes() for path in published}
+    note = project / "notes/2026-01-05-alpha.md"
+    lines = note.read_text().splitlines()
+    lines = [line if not line.startswith("decision_rule:") else
+             f"decision_rule: {value}" for line in lines
+             if value is not None or not line.startswith("decision_rule:")]
+    note.write_text("\n".join(lines) + "\n")
+    with pytest.raises(ValueError, match="decision_rule"):
+        build_index(project)
+    assert before == {path: path.read_bytes() for path in published}
+
+
+@pytest.mark.parametrize(("old", "new"), [
+    ("## Verdict", "## Setup"),
+    ("## Verdict", "### Verdict"),
+    ("## Verdict", "## Verdict\n\n## Verdict"),
+    ("## Verdict", "<!--\n## Verdict\n-->"),
+    ("## Verdict", "```markdown\n## Verdict\n```"),
+    ("## Verdict", "~~~markdown\n## Verdict\n~~~"),
+    ("## Verdict", ""),
+])
+def test_required_sections_must_be_visible_and_in_order(tmp_path, old, new):
+    """Reject missing, duplicated or out-of-order sections, including hidden headings."""
+    source = FIXTURES / "2026-01-05-alpha.md"
+    note = tmp_path / source.name
+    note.write_text(source.read_text().replace(old, new))
+    with pytest.raises(ValueError, match="required sections in order"):
+        read_note(note)
+
+
+def test_old_setup_first_order_fails(tmp_path):
+    """Require the answer before setup even when all five sections are present."""
+    source = FIXTURES / "2026-01-05-alpha.md"
+    header, *_ = source.read_text().split("\n## ")
+    old_order = ("The question", "Setup", "What happened", "What I'd tell another BA", "Verdict")
+    note = tmp_path / source.name
+    note.write_text(header + "".join(f"\n## {title}\n\nFixture only.\n" for title in old_order))
+    with pytest.raises(ValueError, match="required sections in order"):
+        read_note(note)
+
+
+def test_extra_detail_does_not_change_section_order(tmp_path):
+    """Allow smaller headings and quoted output headings without changing note sections."""
+    source = FIXTURES / "2026-01-05-alpha.md"
+    note = tmp_path / source.name
+    note.write_text(source.read_text() + "\n### Detail\n<!--\n## Comment\n-->\n"
+                    "```markdown\n## Quoted output\n```\n~~~\n## More output\n~~~\n")
+    assert read_note(note)["verdict"] == "worth-it"
+
+
 def test_bad_filename_and_missing_front_matter_fail(tmp_path):
     """Verify bad filename and missing front matter fail."""
     path = tmp_path / "not-dated.md"

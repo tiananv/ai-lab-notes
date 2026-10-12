@@ -13,6 +13,7 @@ import yaml
 from scripts.common import cli
 
 VERDICTS = ("worth-it", "maybe", "not-yet")
+SECTIONS = ("The question", "Verdict", "What I'd tell another BA", "Setup", "What happened")
 START, END = "<!-- NOTES:START -->", "<!-- NOTES:END -->"
 THEMES = {
     "light": ("#1c1e22", "#5e646d", "#2f5bd0", "#157a5d", "#995c00", "#e5e1d9"),
@@ -37,8 +38,24 @@ def _mapping(loader: UniqueLoader, node: yaml.MappingNode) -> dict:
 UniqueLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _mapping)
 
 
+def _section_titles(body: str) -> tuple[str, ...]:
+    body = re.sub(r"<!--.*?-->", "", body, flags=re.DOTALL)
+    titles, fence = [], ""
+    for line in body.splitlines():
+        if fence:
+            if re.fullmatch(rf" {{0,3}}{re.escape(fence[0])}{{{len(fence)},}}[ \t]*", line):
+                fence = ""
+            continue
+        marker = re.match(r" {0,3}(`{3,}|~{3,})", line)
+        if marker:
+            fence = marker[1]
+        elif line.startswith("## "):
+            titles.append(line[3:].strip())
+    return tuple(titles)
+
+
 def read_note(path: Path) -> dict:
-    """Read required front matter and reject invalid filenames, dates and values."""
+    """Validate note metadata, including the pre-run rule, and answer-first sections."""
     match = re.fullmatch(r"(\d{4}-\d{2}-\d{2})-[a-z0-9]+(?:-[a-z0-9]+)*\.md", path.name)
     if not match:
         raise ValueError(f"{path.name}: use YYYY-MM-DD-slug.md")
@@ -50,7 +67,7 @@ def read_note(path: Path) -> dict:
         meta = yaml.load("\n".join(lines[1:end]), Loader=UniqueLoader)
     except yaml.YAMLError as error:
         raise ValueError(f"{path.name}: invalid YAML front matter") from error
-    required = {"date", "title", "question", "tools", "time_spent", "verdict", "tags"}
+    required = {"date", "title", "question", "verdict", "decision_rule", "tools", "time_spent", "tags"}
     if not isinstance(meta, dict) or not required <= meta.keys():
         raise ValueError(f"{path.name}: required fields are {', '.join(sorted(required))}")
     try:
@@ -59,7 +76,7 @@ def read_note(path: Path) -> dict:
         raise ValueError(f"{path.name}: date must be YYYY-MM-DD") from error
     if note_date.isoformat() != match[1]:
         raise ValueError(f"{path.name}: date must match the filename")
-    for key in ("title", "question", "time_spent", "verdict"):
+    for key in ("title", "question", "verdict", "decision_rule", "time_spent"):
         if not isinstance(meta[key], str) or not meta[key].strip() or "\n" in meta[key]:
             raise ValueError(f"{path.name}: {key} must be non-empty, single-line text")
     if meta["verdict"] not in VERDICTS:
@@ -72,8 +89,11 @@ def read_note(path: Path) -> dict:
             not isinstance(item, str) or not item.strip() or "\n" in item for item in values
         ):
             raise ValueError(f"{path.name}: {key} must be a non-empty list of strings")
-    if not "\n".join(lines[end + 1:]).strip():
+    body = "\n".join(lines[end + 1:])
+    if not body.strip():
         raise ValueError(f"{path.name}: note body is empty")
+    if _section_titles(body) != SECTIONS:
+        raise ValueError(f"{path.name}: required sections in order: {', '.join(SECTIONS)}")
     return {**meta, "date": note_date.isoformat(), "filename": path.name}
 
 
