@@ -1,30 +1,27 @@
-# Experiment record template
+# Experiment record
 
-Copy this file into a fresh folder under `runs/`. Fill the question, scoring criteria, planned trial count and `decision_rule` before running. Complete the other fields during the real run.
+The preparation command copies this blank form into the kit's local folder. I'll fill the question, scoring rules, planned attempts and `decision_rule` before starting, then record what actually happens.
 
-The `decision_rule` says what would make the task worth doing with AI, including acceptable errors and correction effort. For example: "worth it if at most 2 of 10 answers need major correction and it saves at least 15 minutes". This is an example threshold, not a result. Define major correction and the time comparison before seeing answers; include checking and correction time. Keep the original rule and compare the verdict with it, even if the result disappoints.
+The `decision_rule` covers acceptable errors and the time needed to check and correct the answer. For example: "worth it if at most 2 of 10 answers need major correction and it saves at least 15 minutes". That's a possible threshold, not a result. Define major correction and the time comparison before seeing answers.
 
 - Question and kit:
-- UTC date and time:
-- Tools and exact versions:
-- Backend and requested model ID:
-- Model ID actually reported, or how it was shown in the app:
-- Input files and SHA-256 fingerprints:
-- Prompt file and SHA-256 fingerprint:
-- Source edition and source file hash, if applicable:
-- Hardware, operating system and memory, if relevant:
-- Tool settings, extensions and enabled capabilities:
-- Fixed scoring criteria and planned trial count:
+- Date and time:
+- Tools, versions and model names (or unknown):
+- Inputs and saved prompt:
+- Source edition, if using a public document:
+- Relevant settings, hardware or recording conditions:
+- Scoring criteria and planned attempts:
 - decision_rule:
-- Run order and fresh-session procedure:
+- Comparison order and how each fresh session starts:
 - Setup time:
-- Task time:
-- Provider-reported cost, or unknown:
-- Actual response/output paths:
-- Failures, interruptions and corrections:
-- Checking commands and score sheet paths:
-- Human scoring, evidence and remaining uncertainty:
-- Verdict against decision_rule, including unmet or unmeasured thresholds:
-- Publication review and shareable evidence paths:
+- Task time and comparison with doing it myself:
+- Checking and correction time:
+- Actual cost, or unknown:
+- Original outputs and saved model details:
+- Failures, missing attempts and separate corrected copies:
+- Checking commands and completed score sheets:
+- Human scores, supporting evidence and uncertainty:
+- Verdict against decision_rule, including anything not measured:
+- Files suitable to share and anything withheld:
 
-This is a record form, not an experiment result. An empty field means unrecorded, not zero.
+An empty field means unrecorded, not zero. The helper saves file fingerprints in `metadata.json`; there's no need to copy them into this form.

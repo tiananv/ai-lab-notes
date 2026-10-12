@@ -1,15 +1,15 @@
-# Shareable experiment evidence
+# Evidence for my notes
 
-I'll use this folder for evidence from real experiments on public or made-up inputs. I haven't published any experiment evidence yet. Raw material stays in ignored `runs/`; downloaded source files stay in ignored `data/raw/`.
+I'll use this folder for shareable evidence from real experiments. There isn't any here yet. Raw answers and recordings stay in local `runs/`; downloaded PDFs stay in `data/raw/`.
 
-After a real run and publication review, create `evidence/<note-slug>/`. Use the note's complete filename without `.md`, including its date, for `<note-slug>`. Follow the [publishing steps](../docs/RUNNING.md#publish-the-evidence) before copying any files here.
+After a real run, follow the [sharing steps](../docs/RUNNING.md#publish-the-evidence). Create `evidence/YYYY-MM-DD-slug/` with the same name as the note, without `.md`. Include the original outputs and completed scoring sheets, keeping corrections separate.
 
-Each note's evidence folder should contain shareable original outputs, completed scoring sheets and a `README.md` that lets a reader follow the scores. Include in that README:
+Its README needs:
 
-- A link back to the note and the `decision_rule` recorded before running.
-- Links to the original outputs and completed scoring sheets, with trial identifiers that connect each score to an output. Account for failures and missing trials.
-- Supporting prompts, inputs or source links, run records and model metadata where shareable; record exact tool/model versions and input/output SHA-256 fingerprints.
-- The exact checking commands, human scoring criteria, measured correction effort and any uncertainty. Keep corrected copies separate from original outputs.
-- Source attribution, the publication review and any files or details withheld. State how missing evidence limits what a reader can check.
+- A link to the note and the rule set before running.
+- Links from each score to the original output, including failed or missing attempts.
+- The prompt, input or source links, tool/model versions and saved model details where shareable.
+- The checking commands, human scoring criteria, correction time and any remaining uncertainty.
+- Source attribution and an explanation of anything withheld or not measured.
 
-Link this per-note README where the note discusses its evidence. The template calls that section "What happened". Only copy files after checking for employer/client material, personal information, credentials, private paths and hidden metadata. If an original is unsafe to share, keep it local and disclose the gap; do not label an edited excerpt as an original. Raw recordings and downloaded PDFs remain ignored. Made-up test outputs never belong here.
+I'll check every file before sharing it. If an original contains private material, it stays local and the note explains the gap. An edited excerpt must be labelled as an excerpt. Made-up answers used to check the scripts never belong here.
