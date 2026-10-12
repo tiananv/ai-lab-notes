@@ -1,12 +1,12 @@
 # CPS 230: long context or search
 
-**Question:** Does a model answer more accurately with a whole public standard or with searched excerpts? Results are pending. This is a source-grounding experiment, not a compliance opinion.
+**Question:** Does a model answer more accurately with a whole public standard or with searched excerpts? I'll check answers against the standard, without assessing a business's compliance. I haven't recorded any answers yet.
 
 ## Source and setup
 
 Run `make setup`. The kit targets the July 2026 edition of [APRA CPS 230](https://www.apra.gov.au/standards/cps-230), published with the [April 2026 amendments](https://www.apra.gov.au/consultations/operational-risk-management). The exact source URL and fingerprint are in `inputs/source.json`. The PDF is downloaded locally, never included in the publishable tree. APRA's [copyright terms](https://www.apra.gov.au/copyright) specify CC BY 4.0 with exceptions for logos, the Coat of Arms and third-party material. The MIT licence covers this kit's code and original materials. See APRA's terms for its requested attribution before sharing excerpts.
 
-Read `scoring.md` before running. The questions in `inputs/questions.csv` stay fixed. Choose one model with enough context for the full document and set `LLM_MODEL` to its exact identifier. Use the same model and settings in both arms. Copy the blank scoring sheet and run record.
+Read `scoring.md` before running. The questions in `inputs/questions.csv` stay fixed. Choose one model with enough context for the full document and set `LLM_MODEL` to its exact identifier. Use the same model and settings for the full document and the searched excerpts. Copy the blank scoring sheet and run record.
 
 ## Prepare the comparison
 

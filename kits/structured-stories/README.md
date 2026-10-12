@@ -1,6 +1,6 @@
 # Structured user stories
 
-**Question:** Can a model return valid JSON user stories against a fixed schema on every planned trial? Results are pending. This kit tests instructions in the prompt; provider-specific schema enforcement is a separate experiment.
+**Question:** How many planned trials return user stories in the required JSON format? I haven't collected any responses yet. This kit tests instructions in the prompt; provider-specific schema enforcement is a separate experiment.
 
 ## Setup
 

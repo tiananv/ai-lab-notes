@@ -1,6 +1,6 @@
 # Predeclared scoring
 
-Both tools receive the same instructions and files in fresh sessions. Allow ten minutes per arm. Record task time and any interventions. Score the first produced file, including failures, before asking for corrections.
+Both tools receive the same instructions and files in fresh sessions. Allow ten minutes per tool. Record task time and any interventions. Score the first produced file, including failures, before asking for corrections.
 
 The automated check measures coverage of every SQL column, declared data types, nullability, duplicate entries and invented columns. A non-empty description is only a presence check. A structural pass does not mean the descriptions are accurate.
 

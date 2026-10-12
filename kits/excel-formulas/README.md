@@ -1,6 +1,6 @@
 # Update an Excel workbook
 
-**Question:** Can an agent change the requested cells without breaking formulas or unrelated content? Results are pending.
+**Question:** Can an agent change the requested cells without breaking formulas or unrelated content? I still need an actual edited workbook to check.
 
 ## Setup and input
 

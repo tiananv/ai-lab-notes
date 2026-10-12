@@ -1,6 +1,6 @@
 # Voice memo to requirements
 
-**Question:** How does transcription handle an Australian voice, and which errors change the requirements? Results are pending. No recording or model transcript is supplied.
+**Question:** How does transcription handle an Australian voice, and which errors change the requirements? My next step is to make a recording. There is no recording or model transcript in this kit yet.
 
 ## Prepare an actual recording
 
@@ -13,13 +13,13 @@ cp kits/voice-requirements/inputs/reading.txt runs/voice/reference.txt
 uv run python -c "from pathlib import Path; from scripts.llm import sha256; print(sha256(Path('runs/voice/memo.wav').read_bytes()))"
 ```
 
-Run the hash command after making the recording and copy it to the record. Listen once and correct `reference.txt` to match what you actually said, including deviations from the reading script. This human-verified transcript is the ground truth. Do not give the reading script or reference transcript to the transcription tool.
+Run the hash command after making the recording and copy it to the record. Listen back and correct `reference.txt` to match what you actually said, including deviations from the reading script. I'll score each transcription against the words I actually recorded. Do not give the reading script or reference transcript to the transcription tool.
 
 ## Transcribe
 
 Choose two transcription tools that accept the same recording. Record their versions, model labels, language settings and any automatic punctuation options. Use the exact `transcription-prompt.txt` instructions where the tool allows them. Start fresh sessions, upload the same audio and export the unedited transcriptions to `runs/voice/tool-a-answer.txt` and `runs/voice/tool-b-answer.txt`. Do not correct names or quantities before scoring. If a tool provides no model identifier, record an explicit user-entered label such as unknown-model-in-tool-name with the tool version.
 
-Set `TRANSCRIBER_A_MODEL` and `TRANSCRIBER_B_MODEL` to the actual tool/model label for each arm. Save prompt and response metadata for both tools:
+Set `TRANSCRIBER_A_MODEL` and `TRANSCRIBER_B_MODEL` to the actual tool/model label for each transcription. Save prompt and response metadata for both tools:
 
 ```sh
 uv run python -m scripts.llm --backend manual --model "$TRANSCRIBER_A_MODEL" --prompt kits/voice-requirements/transcription-prompt.txt --out runs/voice/tool-a --answer runs/voice/tool-a-answer.txt
@@ -32,7 +32,7 @@ The text harness records the instruction and transcript. Record the audio hash, 
 
 ## Turn the transcripts into requirements
 
-Set `LLM_MODEL` to one fixed text model. Use the same model and instructions for each transcript so that only the transcription differs. Prepare the first extraction:
+Set `LLM_MODEL` to one fixed text model. Keep the model and instructions fixed. Check for differences introduced during requirement extraction too. Prepare the first extraction:
 
 ```sh
 uv run python -m scripts.llm --backend manual --model "$LLM_MODEL" --prompt kits/voice-requirements/requirements-prompt.txt --input runs/voice/tool-a/output.txt --out runs/voice/tool-a-requirements
