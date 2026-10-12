@@ -1,45 +1,41 @@
 # Voice memo to requirements
 
-**Question:** How does transcription handle an Australian voice, and which errors change the requirements? My next step is to make a recording. There is no recording or model transcript in this kit yet.
+**My question:** Which transcription errors change the requirements? My next step is to record the fictional script; there isn't a recording or transcript here yet.
 
-## Prepare an actual recording
+## What I need
 
-Run `make setup`. Read `inputs/reading.txt` aloud in your own voice and record it as `runs/voice/memo.wav`. The script describes a made-up service. Use your normal accent. Do not simulate another person's voice. Record microphone, room conditions, file format and tool versions in [the run record](../../docs/RUN_RECORD.md).
+My own recording, two transcription tools and one text model for extracting requirements. Set `TRANSCRIBER_A_MODEL`, `TRANSCRIBER_B_MODEL` and `LLM_MODEL` to the displayed models. If a model is hidden, use an explicit label such as `unknown-model-in-tool-name` and record the tool version. Read the [scoring guide](scoring.md) first.
+
+## Steps
+
+1. Copy the inputs and blank forms:
 
 ```sh
-mkdir -p runs/voice
-cp kits/voice-requirements/scoring.csv docs/RUN_RECORD.md runs/voice/
-cp kits/voice-requirements/inputs/reading.txt runs/voice/reference.txt
-uv run python -c "from pathlib import Path; from scripts.llm import sha256; print(sha256(Path('runs/voice/memo.wav').read_bytes()))"
+uv run python -m scripts.prepare kit voice-requirements --out runs/voice
 ```
 
-Run the hash command after making the recording and copy it to the record. Listen back and correct `reference.txt` to match what you actually said, including deviations from the reading script. I'll score each transcription against the words I actually recorded. Do not give the reading script or reference transcript to the transcription tool.
+2. Record `inputs/reading.txt` in my normal voice as `runs/voice/memo.wav`. Note microphone, room conditions and tool settings in the run record. Listen back and correct `runs/voice/reference.txt` to match the words actually spoken. I'll score against that reference, including any departure from the script.
 
-## Transcribe
-
-Choose two transcription tools that accept the same recording. Record their versions, model labels, language settings and any automatic punctuation options. Use the exact `transcription-prompt.txt` instructions where the tool allows them. Start fresh sessions, upload the same audio and export the unedited transcriptions to `runs/voice/tool-a-answer.txt` and `runs/voice/tool-b-answer.txt`. Do not correct names or quantities before scoring. If a tool provides no model identifier, record an explicit user-entered label such as unknown-model-in-tool-name with the tool version.
-
-Set `TRANSCRIBER_A_MODEL` and `TRANSCRIBER_B_MODEL` to the actual tool/model label for each transcription. Save prompt and response metadata for both tools:
+3. Give both transcription tools the same audio in fresh sessions, with `transcription-prompt.txt` where supported. Keep the reading script and reference away from them. Save full, uncorrected transcriptions as `runs/voice/tool-a-answer.txt` and `runs/voice/tool-b-answer.txt`. Record actual time and settings. Import each answer; this example is for tool A:
 
 ```sh
-uv run python -m scripts.llm --backend manual --model "$TRANSCRIBER_A_MODEL" --prompt kits/voice-requirements/transcription-prompt.txt --out runs/voice/tool-a --answer runs/voice/tool-a-answer.txt
-uv run python -m scripts.llm --backend manual --model "$TRANSCRIBER_B_MODEL" --prompt kits/voice-requirements/transcription-prompt.txt --out runs/voice/tool-b --answer runs/voice/tool-b-answer.txt
+uv run python -m scripts.llm --backend manual --model "$TRANSCRIBER_A_MODEL" --prompt runs/voice/transcription-prompt.txt --out runs/voice/tool-a --answer runs/voice/tool-a-answer.txt
+```
+
+Repeat for tool B with its model and paths. If a tool doesn't accept an instruction, save its actual settings in a text file and use that as `--prompt`.
+
+4. Extract requirements using the same text model and instructions for both transcripts:
+
+```sh
+uv run python -m scripts.llm --backend manual --model "$LLM_MODEL" --prompt runs/voice/requirements-prompt.txt --input runs/voice/tool-a/output.txt --out runs/voice/tool-a-requirements
+```
+
+Paste the prepared prompt into a fresh chat. Save the real answer as `answer.txt` in that extraction folder and repeat with `--answer runs/voice/tool-a-requirements/answer.txt`. Do the same for tool B. The helper saves text; transcription happens in the chosen audio tools.
+
+## How I'll score it
+
+```sh
 uv run python -m scripts.voice_score --reference runs/voice/reference.txt --transcript runs/voice/tool-a/output.txt --output runs/voice/tool-a/measured.csv
-uv run python -m scripts.voice_score --reference runs/voice/reference.txt --transcript runs/voice/tool-b/output.txt --output runs/voice/tool-b/measured.csv
 ```
 
-The text harness records the instruction and transcript. Record the audio hash, actual upload time and tool settings in the run record as well. It does not perform speech recognition itself. If the tool cannot take a custom instruction, save the actual settings/instructions used as a text file and pass that file as `--prompt` instead.
-
-## Turn the transcripts into requirements
-
-Set `LLM_MODEL` to one fixed text model. Keep the model and instructions fixed. Check for differences introduced during requirement extraction too. Prepare the first extraction:
-
-```sh
-uv run python -m scripts.llm --backend manual --model "$LLM_MODEL" --prompt kits/voice-requirements/requirements-prompt.txt --input runs/voice/tool-a/output.txt --out runs/voice/tool-a-requirements
-```
-
-Paste the prepared prompt into a fresh chat, save its real answer as `answer.txt` in that extraction folder and repeat the command with `--answer runs/voice/tool-a-requirements/answer.txt`. Repeat for tool-b using its retained transcript. An API backend can replace manual using the [run guide](../../docs/RUNNING.md).
-
-## Score
-
-Read `scoring.md` first. The checker fills word counts, word errors and word error rate. It ignores case and punctuation; it does not treat digits and number words as equivalent. Complete the important-term and requirement checks against the verified reference transcript, keeping errors introduced by transcription separate from errors introduced by extraction. A single speaker and recording cannot support a claim about Australian accents generally. Record that limit in the eventual note.
+Repeat for tool B. The script counts word errors, ignoring case and punctuation. I'll use the rubric to check important facts and requirements, separating transcription mistakes from extraction mistakes. One speaker and recording won't establish how a tool handles Australian accents generally.
