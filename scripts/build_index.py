@@ -100,10 +100,7 @@ def build_index(root: Path) -> int:
                         f'{_cell(", ".join(note["tools"]))} |')
         block = "\n".join(rows)
     else:
-        block = ("**First note coming soon.** I haven't recorded a reviewed experiment yet. "
-                 "The kits and blank scoring sheets are ready; results are pending.\n\n"
-                 "Next I'll [run a kit](#how-to-run-it), check the actual output and write "
-                 "up what happened.")
+        block = "**First note coming soon.**"
     readme.write_text(before + START + "\n\n" + block + "\n\n" + END + after,
                       encoding="utf-8")
     return len(notes)
