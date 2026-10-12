@@ -1,0 +1,14 @@
+FICTIONAL INPUT, CREATED FOR THIS KIT. This is not an experiment result.
+Organisation: Fictional Paper Kookaburra Co, a made-up equipment lending service.
+
+The booking coordinator needs staff to find open equipment requests by status.
+The agreed statuses are Draft, Submitted and Closed. A requester can edit a Draft.
+Only the coordinator can close a Submitted request. Closing requires a reason.
+A request needs an item, quantity and requested collection date before submission.
+The group agreed that quantity must be a positive whole number.
+Cancelled requests were discussed, but no cancellation rule was agreed.
+The coordinator will confirm the cancellation rule by Friday at 3 pm Sydney time.
+The service owner will provide status definitions by Thursday at midday Sydney time.
+No decision was made about email notifications. The team wants to ask users first.
+The first release must work with keyboard navigation. Mobile support is out of scope.
+No actual calendar date was specified for Thursday or Friday.
