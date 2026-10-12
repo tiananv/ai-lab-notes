@@ -1,6 +1,22 @@
 # Running an experiment
 
-Run commands from the repository root after `make setup`. Every kit is pending until someone runs it. Keep raw material and outputs under ignored `runs/`; downloaded public data goes in ignored `data/raw/`. Copy [RUN_RECORD.md](RUN_RECORD.md) into each experiment folder and record the actual tool versions. No script writes a note.
+Every kit is pending until someone runs it. Keep raw material and outputs under ignored `runs/`; downloaded public data goes in ignored `data/raw/`. Only reviewed, shareable evidence goes into the tracked [evidence folder](../evidence/README.md). No script writes a note.
+
+## Setup and checks
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and use the Python version in [.python-version](../.python-version). From the repository root, run:
+
+```sh
+make setup
+make results
+uv run pytest
+```
+
+These commands install the locked dependencies, rebuild the index and test the harness. They need no model account and produce no experiment results. `make index` also rebuilds the index. To run an experiment, follow the steps in a [kit](../BACKLOG.md).
+
+## Before running
+
+Copy [RUN_RECORD.md](RUN_RECORD.md) and the kit's blank scoring sheet into a fresh folder under `runs/`. Record the actual tool versions, scoring criteria, planned trial count and `decision_rule` before seeing any answers. The rule must cover acceptable errors and the effort needed to check and correct the output. Define how you will measure time saved against doing the task yourself. Keep that rule unchanged when writing the verdict; if you revise it, record a new experiment rather than changing the earlier threshold.
 
 ## Model access
 
@@ -39,6 +55,17 @@ The agent and voice kits include interactive steps outside this text harness. Re
 
 ## From evidence to a note
 
-Score first. A blank human score means no judgement has been made. Keep the original output alongside any corrected version. Summarise only what the evidence supports, including failed attempts. When you have a real result, copy `TEMPLATE.md` to `notes/YYYY-MM-DD-slug.md`, fill every field and write the note yourself. Use `worth-it`, `maybe` or `not-yet` for `verdict`; `tools` and `tags` are non-empty YAML lists. Run `make results` and `uv run pytest`.
+Score first. A blank human score means no judgement has been made. Keep the original output alongside any corrected version. Compare the measured errors and effort with the pre-run `decision_rule`, and make any unmeasured threshold explicit. Summarise only what the evidence supports, including failed attempts.
 
-Before publishing, select only evidence you can share publicly. Raw run folders remain ignored. If you publish excerpts in a note, record the input and output hashes, tool/model versions and exact scoring command so another person can follow the result. Re-running a model is not guaranteed to reproduce the same words.
+### Publish the evidence
+
+1. Review each proposed file, including prompts, outputs, metadata, run records and completed scoring sheets. Confirm that inputs are public or made up and that there is no employer or client material, personal information, credentials, private file paths or hidden document metadata. Check source terms and attribution before sharing public excerpts. If an original output cannot be shared safely, leave it in `runs/`, explain the evidence gap and limit the claim. Do not present an edited excerpt as the complete original.
+2. Create `evidence/<note-slug>/`, where `<note-slug>` is the note filename without `.md`, including its date. Copy only the files that passed review: shareable original outputs, completed scoring sheets and the supporting prompts, metadata and run record where shareable. Keep each trial identifiable, include failed attempts and keep corrections in separate files. Never copy the whole raw run folder without reviewing its contents.
+3. Add a `README.md` inside that evidence folder. Follow the [evidence checklist](../evidence/README.md): link each published file, map scores to original outputs, record the pre-run rule, input and output SHA-256 fingerprints, tool/model versions, source attribution and exact checking commands. Identify anything withheld or unmeasured. Hashes identify files; readers need the shareable originals to audit a score. Raw recordings and downloaded PDFs stay in their ignored folders.
+4. Link the evidence folder's README from the note's "What happened" section, using `../evidence/YYYY-MM-DD-slug/README.md`. Check every link and ensure the shareable evidence files are included with the note in the eventual authorised commit. `evidence/` is tracked; `runs/` remains ignored. Do not force-add raw material. Re-running a model is not guaranteed to reproduce the same words.
+
+### Write the note
+
+When you have a real result, copy `TEMPLATE.md` to `notes/YYYY-MM-DD-slug.md`, fill every field and write the note yourself. Copy the pre-run `decision_rule` into its required, non-empty, single-line field. Use `worth-it`, `maybe` or `not-yet` for `verdict`; `tools` and `tags` are non-empty YAML lists.
+
+Keep the five main headings in this order: The question, Verdict, What I'd tell another BA, Setup, What happened. Use smaller headings (`###`) for extra detail. The verdict must refer back to the decision rule and say which thresholds were met, missed or unmeasured. The index checks the required metadata and section order; a person must check the evidence links, publication suitability and whether the verdict follows the rule. Run `make results` and `uv run pytest` before publishing.
