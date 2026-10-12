@@ -1,0 +1,3 @@
+tool,version,model,transcription_seconds,reference_words,word_errors,word_error_rate,critical_terms_correct,requirements_correct,reviewer_notes
+tool-a,,,,,,,,,
+tool-b,,,,,,,,,
