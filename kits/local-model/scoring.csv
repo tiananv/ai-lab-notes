@@ -1,0 +1,9 @@
+criterion,rule,local_score,hosted_score,evidence
+states,Includes Draft Submitted and Closed without inventing a cancelled state,,,
+permissions,Requester edits Draft and only coordinator closes Submitted,,,
+validation,Required fields and positive whole quantity are testable,,,
+closure,Closing requires a reason,,,
+owners,Correct owners and stated due times without invented calendar dates,,,
+uncertainty,Cancellation and notifications stay unresolved,,,
+scope,Keyboard access included and mobile excluded,,,
+traceability,Requirements and acceptance criteria are supported by source statements,,,

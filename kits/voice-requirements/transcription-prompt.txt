@@ -1,0 +1,1 @@
+Transcribe the supplied fictional voice recording verbatim. Keep the spoken words, quantities, place names and times. Do not summarise or silently correct the speaker. Mark an unclear span as [unclear]. Return only the transcript. Do not use an external reading script or invent missing words.

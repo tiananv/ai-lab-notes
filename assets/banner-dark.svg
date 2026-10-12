@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+  <title id="title">ai-lab-notes</title>
+  <desc id="desc">Small experiments in everyday BA work. A geometric notebook with a connected question and check.</desc>
+  <rect width="1200" height="300" rx="18" fill="#121417"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+    <text x="64" y="76" fill="#a3a9b2" font-size="14" letter-spacing="3">BUSINESS ANALYSIS / LAB NOTEBOOK</text>
+    <text x="60" y="154" fill="#e8e9ec" font-size="64" font-weight="650" letter-spacing="-2">ai-lab-notes</text>
+    <text x="64" y="202" fill="#a3a9b2" font-size="23">Small experiments in everyday BA work.</text>
+  </g>
+  <path d="M64 248H790" stroke="#2c3139" stroke-width="2"/>
+  <g fill="none" stroke-width="3">
+    <rect x="904" y="54" width="176" height="194" rx="12" stroke="#8eaaff"/>
+    <path d="M933 54V248" stroke="#2c3139"/>
+    <path d="M952 97H1053M952 126H1028M952 155H1053M952 184H1009" stroke="#2c3139" stroke-linecap="round"/>
+    <circle cx="883" cy="100" r="19" fill="#121417" stroke="#efb45c"/>
+    <path d="M883 119V218H1070" stroke="#8eaaff"/>
+    <circle cx="1091" cy="218" r="21" fill="#121417" stroke="#62cfa9"/>
+    <path d="M1081 218L1088 225L1101 210" stroke="#62cfa9" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,0 +1,3 @@
+tool,tool_version,model,task_seconds,interventions,rows_needing_correction,correction_seconds,reviewer_notes
+copilot-agent,,,,,,,
+claude-code,,,,,,,

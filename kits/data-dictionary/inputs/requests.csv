@@ -1,0 +1,4 @@
+request_id,service_id,requested_on,status,quantity,closure_reason
+101,1,2026-01-10,Draft,2,
+102,2,2026-01-11,Submitted,1,
+103,1,2026-01-12,Closed,3,Items returned
