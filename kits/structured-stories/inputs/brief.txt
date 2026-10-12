@@ -1,0 +1,6 @@
+FICTIONAL INPUT. Fictional Paper Kookaburra Co lends equipment.
+A requester can save a Draft with incomplete information.
+Submission requires item, positive whole quantity and collection date.
+The coordinator can close a Submitted request only after entering a reason.
+Staff need to filter requests by Draft, Submitted or Closed.
+Keyboard navigation is required. Email notification rules have not been decided.
