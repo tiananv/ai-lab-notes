@@ -1,10 +1,10 @@
 # Local model on a laptop
 
-**Question:** How much requirement quality is lost against a hosted model when the task would need to stay on a laptop? Results are pending. This experiment uses fictional material only; it cannot establish that a configuration is suitable for private work.
+**Question:** How do a local and a hosted model compare on requirement quality and effort using fictional meeting material? Results are pending. This experiment uses fictional material only; it cannot establish that a configuration is suitable for private work.
 
 ## Inputs and setup
 
-Use `inputs/workshop.txt` and `prompt.txt` unchanged for both arms. The source is a made-up workshop at Fictional Paper Kookaburra Co. The checklist in `scoring.csv` is fixed before the run. Copy it and [the run record](../../docs/RUN_RECORD.md) to `runs/local-comparison/`.
+Use `inputs/workshop.txt` and `prompt.txt` unchanged for both arms. The source is a made-up workshop at Fictional Paper Kookaburra Co. The checklist in `scoring.csv` is fixed before the run. Copy it and [the run record](../../docs/RUN_RECORD.md) to `runs/local-comparison/`. Before seeing answers, record a `decision_rule` for acceptable errors and checking and correction effort, and use the same rule for both arms.
 
 Run `make setup`. Install [Ollama](https://docs.ollama.com/quickstart) separately, choose a downloaded local model that fits the laptop, and record its tag, digest from `ollama list`, Ollama version, laptop memory and operating system. Set `LOCAL_MODEL` to that model and `HOSTED_MODEL` to the exact model shown in a hosted chat app. Record the hosted app version if exposed, otherwise write unknown.
 
@@ -31,4 +31,4 @@ A hosted API can replace the manual arm using the [shared backend guide](../../d
 
 For each checklist row, score 0 for missing or wrong, 1 for partly correct, and 2 for fully supported by the input. Record a quotation or location from the actual answer as evidence. Add the criterion scores for each arm and report the difference alongside the individual rows. Record elapsed time and setup effort separately. Blind the labels during scoring if practical.
 
-The same small task does not measure general model quality. Local execution alone does not establish privacy or fitness for sensitive work. Decide the verdict from usefulness, errors and effort after the run. There is no completed score sheet or model output in this kit.
+The same small task does not measure general model quality. Local execution alone does not establish privacy or fitness for sensitive work. Compare usefulness, errors and effort with the pre-run `decision_rule` when deciding the verdict. There is no completed score sheet or model output in this kit.

@@ -12,7 +12,7 @@ flowchart LR
     question["Question"] --> kit["Kit"] --> run["Run"] --> score["Score"] --> note["Note"]
 ```
 
-Choose a kit and decide how to score it before running anything. Keep the input and prompt fixed when comparing tools. Save the actual output, model details and time spent, then run the kit's checks. Write the note after reviewing the evidence, including anything the checks could not establish.
+Choose a kit and decide how to score it and what would make it useful before running anything. Keep the input and prompt fixed when comparing tools. Save the actual output, model details and time spent, then run the kit's checks. Write the note after reviewing the evidence, leading with the verdict and practical BA advice.
 
 ## Notes
 
@@ -26,13 +26,15 @@ Run a [kit](BACKLOG.md), score the actual output, then write a note using [TEMPL
 
 <!-- TIANA: write the first note before publishing -->
 <!-- TIANA: run the chosen kit, complete its human scoring fields and retain the actual outputs before making any claims -->
+<!-- TIANA: record decision_rule before running, covering acceptable errors and correction effort, and compare the verdict with that rule -->
+<!-- TIANA: publish reviewed original outputs and completed scoring sheets under evidence/<note-slug>/ and link them from the note -->
 
 ## Backlog
 
-- [Local model on a laptop](kits/local-model/): how much quality is lost compared with a hosted model on fictional meeting material?
+- [Local model on a laptop](kits/local-model/): how do a local and a hosted model compare on requirement quality and effort using fictional meeting material?
 - [CPS 230: long context or search](kits/cps230-context/): which approach answers questions about a public standard more accurately?
 - [Copilot agent mode and Claude Code](kits/data-dictionary/): how do they compare on the same data dictionary task?
-- [Structured user stories](kits/structured-stories/): can a model produce valid JSON against a fixed schema on every trial?
+- [Structured user stories](kits/structured-stories/): can a model produce consistent user stories a team can load into a backlog tool, using JSON with a fixed schema?
 - [Editing an Excel workbook](kits/excel-formulas/): can an agent make the requested changes and preserve the formulas?
 - [Voice memo to requirements](kits/voice-requirements/): how does transcription handle an Australian voice, and what carries through to requirements?
 
@@ -41,9 +43,10 @@ The [backlog](BACKLOG.md) records the planned comparisons. Each kit has inputs, 
 ## Rules I follow
 
 - Use public or made-up data only. Keep employer, client and personal material out.
-- Decide the scoring criteria before the run. Keep failures and missing trials visible.
+- Decide the scoring criteria and a rule for acceptable errors and correction effort before the run. Keep failures and missing trials visible.
 - Record the tools, versions, model identifiers, prompts and run conditions.
 - Check outputs with code or source evidence, then record the human judgement separately.
+- Publish reviewed original outputs and completed scoring sheets in [evidence/](evidence/README.md), linked from each note.
 - Leave results pending until there is evidence. Write notes after doing the experiment.
 
 ## What the AI does / What checks it
@@ -58,15 +61,7 @@ The [backlog](BACKLOG.md) records the planned comparisons. Each kit has inputs, 
 
 ## Try it
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and a Python version matching [.python-version](.python-version). From this folder:
-
-```sh
-make setup
-make results
-uv run pytest
-```
-
-These commands build the index and test the harness. To produce experiment evidence, follow the exact commands in a [kit](BACKLOG.md). The [run guide](docs/RUNNING.md) covers model access, manual answers and saved metadata. No model account is needed for setup or tests.
+Follow the [run guide](docs/RUNNING.md) for setup, checks and running an experiment.
 
 ## Data
 
@@ -80,6 +75,7 @@ The standard kit downloads [APRA CPS 230](https://www.apra.gov.au/standards/cps-
 
 ```text
 notes/          Your dated notes, initially empty
+evidence/       Reviewed original outputs and completed scoring sheets for each note
 TEMPLATE.md     Front matter and writing prompts for a real note
 BACKLOG.md      Planned questions and links to kits
 kits/          Experiment inputs, prompts and blank scoring sheets
@@ -92,3 +88,7 @@ assets/        Light and dark banners; charts appear after notes exist
 ## About this repo
 
 This repository was built with AI coding assistants. The index and charts come from the code and the notes in this repository; experiment claims belong in notes written after real runs and checks.
+
+## Under the hood
+
+The [scripts](scripts/) save model responses, check measurable outputs and rebuild the notes index with `make results`. The [offline tests](tests/) use clearly labelled synthetic fixtures and never call a real model. Setup and verification commands are in the [run guide](docs/RUNNING.md#setup-and-checks).

@@ -18,7 +18,7 @@ uv run python -m scripts.cps230 prepare --mode long-context --out runs/cps230/lo
 uv run python -m scripts.cps230 prepare --mode search --out runs/cps230/search-prompts
 ```
 
-Download once, then reuse `data/raw/cps230/`. The preparation command validates the PDF hash and saves a context manifest beside each prompt. Review text extraction against the PDF before starting. Long context includes every PDF page. Search ranks pages by distinct query-word overlap, removes a small fixed stopword list, and takes the top three pages, with ties in document order. This is a transparent lexical baseline. It does not use embeddings or online search.
+Download once, then reuse `data/raw/cps230/`. The preparation command validates the PDF hash and saves a context manifest beside each prompt. Review text extraction against the PDF before starting. Long context includes every PDF page. Search uses three pages picked by matching words in the question. The selection details are in [the code](../../scripts/cps230.py).
 
 ## Run and score
 
