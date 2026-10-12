@@ -1,3 +1,3 @@
-# Synthetic test fixtures
+# Synthetic test inputs
 
-Every file here is a deliberately fabricated software-test input. The Markdown files exercise front matter and chart counting; they are not lab notes and describe no experiment. The JSON and text responses are mock payloads, not outputs from a real model. No fixture is read from `notes/` or used as portfolio evidence.
+Every file here is a deliberately fabricated software-test input. The Markdown files test front matter validation and the notes table. They describe no experiment. The JSON and text responses stand in for model answers during tests. These files stay separate from `notes/` and are never used as experiment evidence.

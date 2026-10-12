@@ -1,11 +1,8 @@
 """Keep every test offline and temporary test files inside the repository cache."""
 
-import os
 import socket
 
 import pytest
-
-os.environ.setdefault("MPLCONFIGDIR", os.path.abspath(".cache/matplotlib"))
 
 
 @pytest.fixture(autouse=True)

@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       UV_CACHE_DIR: .cache/uv
-      MPLCONFIGDIR: .cache/matplotlib
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -17,4 +16,4 @@ jobs:
       - run: uv sync --locked
       - run: uv run pytest
       - run: make results
-      - run: git diff --exit-code -- README.md assets/
+      - run: git diff --exit-code -- README.md

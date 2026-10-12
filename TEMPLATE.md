@@ -15,6 +15,7 @@ tags: []
 <!-- Write decision_rule in the run record before running; copy it here unchanged. -->
 <!-- Example rule, not a result: worth it if at most 2 of 10 answers need major correction and it saves at least 15 minutes. -->
 <!-- Only public or made-up data belongs here. No employer, client or private material. -->
+<!-- Suggested order: question, verdict, BA advice, setup, evidence. Adapt the headings to the note. -->
 
 ## The question
 

@@ -3,7 +3,7 @@
   <img src="assets/banner-light.svg" alt="ai-lab-notes. Small experiments in everyday BA work." width="1200">
 </picture>
 
-AI features arrive faster than it is possible to judge them. This notebook is a place to try them on business analysis work, keep the evidence and write a short, dated note about whether they help. Each experiment starts with a question, a small task and a scoring sheet.
+I want to find out where AI saves me time on everyday BA tasks. I'll use this notebook to try a small task, keep the evidence and write a short, dated note about whether it helps. Each experiment starts with a question and a rule for acceptable errors and checking effort.
 
 ## How I run an experiment
 
@@ -12,22 +12,17 @@ flowchart LR
     question["Question"] --> kit["Kit"] --> run["Run"] --> score["Score"] --> note["Note"]
 ```
 
-Choose a kit and decide how to score it and what would make it useful before running anything. Keep the input and prompt fixed when comparing tools. Save the actual output, model details and time spent, then run the kit's checks. Write the note after reviewing the evidence, leading with the verdict and practical BA advice.
+For each experiment, I'll choose a kit and decide how to score it and what would make it useful before running anything. I'll keep the input and prompt fixed when comparing tools, save the actual output and model details, and include checking and correction time. After checking the evidence, I'll write the verdict and practical BA advice in a short note.
 
 ## Notes
 
 <!-- NOTES:START -->
 
-**First note coming soon.** The experiment kits and scoring sheets are ready. Experiment results are pending.
+**First note coming soon.** The experiment kits and scoring sheets are ready. I haven't recorded a reviewed experiment yet, so results are pending.
 
-Run a [kit](BACKLOG.md), score the actual output, then write a note using [TEMPLATE.md](TEMPLATE.md). Run `make results` to refresh this index and its charts.
+Next I'll run a [kit](BACKLOG.md), check its output and write my first note using [TEMPLATE.md](TEMPLATE.md).
 
 <!-- NOTES:END -->
-
-<!-- TIANA: write the first note before publishing -->
-<!-- TIANA: run the chosen kit, complete its human scoring fields and retain the actual outputs before making any claims -->
-<!-- TIANA: record decision_rule before running, covering acceptable errors and correction effort, and compare the verdict with that rule -->
-<!-- TIANA: publish reviewed original outputs and completed scoring sheets under evidence/<note-slug>/ and link them from the note -->
 
 ## Backlog
 
@@ -40,7 +35,7 @@ Run a [kit](BACKLOG.md), score the actual output, then write a note using [TEMPL
 
 The [backlog](BACKLOG.md) records the planned comparisons. Each kit has inputs, instructions and a scoring sheet with no results filled in.
 
-## Rules I follow
+## Rules for each experiment
 
 - Use public or made-up data only. Keep employer, client and personal material out.
 - Decide the scoring criteria and a rule for acceptable errors and correction effort before the run. Keep failures and missing trials visible.
@@ -65,30 +60,28 @@ Follow the [run guide](docs/RUNNING.md) for setup, checks and running an experim
 
 ## Data
 
-The kit inputs are explicitly fictional and covered by this repository's [MIT licence](LICENSE). Synthetic responses used to test the harness live only in `tests/`. They are never notebook entries or experiment evidence.
+The kit inputs are explicitly fictional and covered by this repository's [MIT licence](LICENSE). Made-up responses used to test the checking tools live only in `tests/`. They are never notebook entries or experiment evidence.
 
 The standard kit downloads [APRA CPS 230](https://www.apra.gov.au/standards/cps-230) from APRA and records its edition and SHA-256, a fingerprint of the exact file. APRA's [copyright terms](https://www.apra.gov.au/copyright) specify a Creative Commons Attribution licence, with exceptions for logos, the Coat of Arms and third-party material. The PDF is stored in ignored `data/raw/`, along with download metadata, and is not included in this repository. Voice recordings must be made for the experiment from the fictional reading script and remain local in `runs/`.
-
-<!-- TIANA: confirm the chosen inputs and any excerpts or recordings are suitable for public sharing; check APRA's current terms before publishing excerpts -->
 
 ## Repo layout
 
 ```text
-notes/          Your dated notes, initially empty
+notes/          My dated notes, initially empty
 evidence/       Reviewed original outputs and completed scoring sheets for each note
 TEMPLATE.md     Front matter and writing prompts for a real note
 BACKLOG.md      Planned questions and links to kits
 kits/          Experiment inputs, prompts and blank scoring sheets
 scripts/       Index builder, model backends and measurable checks
 docs/          Shared run instructions and an experiment record template
-tests/         Offline tests and clearly labelled synthetic fixtures
-assets/        Light and dark banners; charts appear after notes exist
+tests/         Offline checks using made-up test inputs
+assets/        Light and dark banners
 ```
 
 ## About this repo
 
-This repository was built with AI coding assistants. The index and charts come from the code and the notes in this repository; experiment claims belong in notes written after real runs and checks.
+This first version was built with AI coding assistants. The results come from the code in this repo.
 
 ## Under the hood
 
-The [scripts](scripts/) save model responses, check measurable outputs and rebuild the notes index with `make results`. The [offline tests](tests/) use clearly labelled synthetic fixtures and never call a real model. Setup and verification commands are in the [run guide](docs/RUNNING.md#setup-and-checks).
+The [scripts](scripts/) save model responses, check measurable outputs and rebuild the notes table with `make results`. The [offline tests](tests/) use clearly labelled made-up inputs and never call a real model. CI runs those checks and flags an out-of-date notes table. Setup and verification commands are in the [run guide](docs/RUNNING.md#setup-and-checks).

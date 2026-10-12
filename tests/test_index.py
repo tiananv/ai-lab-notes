@@ -1,8 +1,7 @@
-"""Check metadata contracts and reproducible chart/index behaviour on fixture files."""
+"""Check front matter validation and reproducible notes tables with synthetic inputs."""
 
 from pathlib import Path
 import shutil
-import xml.etree.ElementTree as ET
 
 import pytest
 
@@ -33,31 +32,25 @@ def test_empty_index_has_no_charts_and_preserves_surroundings(tmp_path):
     assert not list((project / "notes").iterdir())
 
 
-def test_index_sorts_counts_gap_months_and_is_deterministic(tmp_path):
-    """Verify index sorts counts gap months and is deterministic."""
+def test_index_sorts_notes_without_charts_and_is_deterministic(tmp_path):
+    """Keep the plain notes table stable and leave chart assets uncreated."""
     project = root(tmp_path, True)
     assert build_index(project) == 2
     text = (project / "README.md").read_text()
     assert text.index("2026-03-06") < text.index("2026-01-05")
     assert "notes/2026-03-06-beta.md" in text
-    charts = list((project / "assets").glob("*.svg"))
-    assert len(charts) == 4
-    assert "2026-02" in (project / "assets/activity-light.svg").read_text()
-    original = {path.name: path.read_bytes() for path in charts}
-    for chart in charts:
-        ET.parse(chart)
-        assert "<dc:date>" not in chart.read_text()
+    assert "| Date | Title | Verdict | Tools |" in text
+    assert "| worth-it | mock-tool v0 |" in text
+    assert "<picture>" not in text
+    assert not (project / "assets").exists()
     build_index(project)
     assert text == (project / "README.md").read_text()
-    assert original == {path.name: path.read_bytes() for path in charts}
-    for note in (project / "notes").glob("*.md"):
-        note.unlink()
-    build_index(project)
-    assert not list((project / "assets").glob("*.svg"))
 
 
 @pytest.mark.parametrize(("old", "new"), [
     ("verdict: worth-it", "verdict: amazing"),
+    ("verdict: worth-it", ""),
+    ("verdict: worth-it", 'verdict: ""'),
     ("tools: [\"mock-tool v0\"]", "tools: mock-tool"),
     ("tags: [fixture]", "tags: []"),
     ("time_spent: \"1 min\"", "time_spent: yesterday"),
@@ -81,8 +74,8 @@ def test_decision_rule_is_required_text_before_indexing(tmp_path, value):
     """Reject missing, blank or non-text rules without replacing the published index."""
     project = root(tmp_path, True)
     build_index(project)
-    published = [project / "README.md", *sorted((project / "assets").glob("*.svg"))]
-    before = {path: path.read_bytes() for path in published}
+    readme = project / "README.md"
+    before = readme.read_bytes()
     note = project / "notes/2026-01-05-alpha.md"
     lines = note.read_text().splitlines()
     lines = [line if not line.startswith("decision_rule:") else
@@ -91,45 +84,24 @@ def test_decision_rule_is_required_text_before_indexing(tmp_path, value):
     note.write_text("\n".join(lines) + "\n")
     with pytest.raises(ValueError, match="decision_rule"):
         build_index(project)
-    assert before == {path: path.read_bytes() for path in published}
+    assert readme.read_bytes() == before
 
 
-@pytest.mark.parametrize(("old", "new"), [
-    ("## Verdict", "## Setup"),
-    ("## Verdict", "### Verdict"),
-    ("## Verdict", "## Verdict\n\n## Verdict"),
-    ("## Verdict", "<!--\n## Verdict\n-->"),
-    ("## Verdict", "```markdown\n## Verdict\n```"),
-    ("## Verdict", "~~~markdown\n## Verdict\n~~~"),
-    ("## Verdict", ""),
+@pytest.mark.parametrize("body", [
+    "",
+    "Synthetic parser input with no headings.\n",
+    "## Setup\n\n## What happened\n\n## Verdict\n\n## The question\n",
+    "## Different headings\n\n### Detail\n\n```markdown\n## Quoted output\n```\n",
 ])
-def test_required_sections_must_be_visible_and_in_order(tmp_path, old, new):
-    """Reject missing, duplicated or out-of-order sections, including hidden headings."""
+def test_index_accepts_front_matter_without_a_fixed_body(tmp_path, body):
+    """Leave body writing to the notebook owner while still indexing valid metadata."""
+    project = root(tmp_path)
     source = FIXTURES / "2026-01-05-alpha.md"
-    note = tmp_path / source.name
-    note.write_text(source.read_text().replace(old, new))
-    with pytest.raises(ValueError, match="required sections in order"):
-        read_note(note)
-
-
-def test_old_setup_first_order_fails(tmp_path):
-    """Require the answer before setup even when all five sections are present."""
-    source = FIXTURES / "2026-01-05-alpha.md"
-    header, *_ = source.read_text().split("\n## ")
-    old_order = ("The question", "Setup", "What happened", "What I'd tell another BA", "Verdict")
-    note = tmp_path / source.name
-    note.write_text(header + "".join(f"\n## {title}\n\nFixture only.\n" for title in old_order))
-    with pytest.raises(ValueError, match="required sections in order"):
-        read_note(note)
-
-
-def test_extra_detail_does_not_change_section_order(tmp_path):
-    """Allow smaller headings and quoted output headings without changing note sections."""
-    source = FIXTURES / "2026-01-05-alpha.md"
-    note = tmp_path / source.name
-    note.write_text(source.read_text() + "\n### Detail\n<!--\n## Comment\n-->\n"
-                    "```markdown\n## Quoted output\n```\n~~~\n## More output\n~~~\n")
-    assert read_note(note)["verdict"] == "worth-it"
+    header = source.read_text().split("\n## ", 1)[0]
+    note = project / "notes" / source.name
+    note.write_text(header + "\n" + body)
+    assert build_index(project) == 1
+    assert f"notes/{source.name}" in (project / "README.md").read_text()
 
 
 def test_bad_filename_and_missing_front_matter_fail(tmp_path):

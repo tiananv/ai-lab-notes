@@ -1,6 +1,5 @@
 export UV_CACHE_DIR := $(CURDIR)/.cache/uv
 export UV_PYTHON_INSTALL_DIR := $(CURDIR)/.cache/python
-export MPLCONFIGDIR := $(CURDIR)/.cache/matplotlib
 
 .PHONY: setup test index results cps230 excel
 
