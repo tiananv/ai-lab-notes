@@ -1,3 +1,6 @@
-# Synthetic test inputs
+# Example datasets
 
-Every file here is a deliberately fabricated software-test input. The Markdown files test front matter validation and the notes table. They describe no experiment. The JSON and text responses stand in for model answers during tests. These files stay separate from `notes/` and are never used as experiment evidence.
+- Synthetic inputs for validating the experiment tooling.
+- Markdown examples check note metadata and index generation; their dates and contents are test cases, not an experiment history.
+- JSON and text examples check response handling without live model calls.
+- These examples remain separate from `notes/` and from evidence supporting experiment findings.
